@@ -452,9 +452,10 @@ function endGame(result, wasFreeDouble = false) {
       // Standard win pays 1:1 (applies to free double wins too)
       winAmount = bet; // For standard double, bet was already doubled
       if (wasFreeDouble && finalResult.includes("Double")) {
-           // Bet amount was NOT doubled for free double, so winnings are 1x original bet
-           chips += bet + bet; // Return original bet + 1x original bet winnings
-           finalResult += ` (Payé 1:1 sur Double Gratuit: +${bet} jetons)`;
+           // Bet amount was NOT doubled. Pay 3:1 on original bet (return bet + win 3x bet).
+           const freeDoubleWinnings = bet * 3;
+           chips += bet + freeDoubleWinnings; // Return original bet + 3x original bet winnings
+           finalResult += ` (Payé 3:1 sur Double Gratuit: +${freeDoubleWinnings} jetons)`;
       } else if (!finalResult.includes("Double")) {
            // Standard win (not double)
             chips += bet * 2; // Return original bet + 1x original bet winnings
