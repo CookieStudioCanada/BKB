@@ -1,0 +1,238 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700&display=swap');
+
+body {
+  min-height: 100vh;
+  background-color: #1c1c1c; /* Kept original dark gray */
+  font-family: 'Exo 2', sans-serif; /* Apply new futuristic font */
+}
+
+.container {
+  height: 100vh;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+#game-container {
+  max-width: 600px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  padding: 5px;
+  min-height: 40px;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.card {
+  background-color: white;
+  color: black;
+  padding: 8px;
+  border-radius: 4px;
+  min-width: 30px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Style red suits */
+.card[data-suit="♥"],
+.card[data-suit="♦"] {
+  color: red;
+}
+
+/* Animation for new cards */
+@keyframes dealCard {
+  from {
+      transform: translateY(-50px);
+      opacity: 0;
+  }
+  to {
+      transform: translateY(0);
+      opacity: 1;
+  }
+}
+
+.card {
+  animation: dealCard 0.3s ease-out;
+}
+
+/* Style the bet input */
+#bet-amount {
+  width: 80px;
+  background-color: #ffffff;
+}
+
+/* Hide number input arrows */
+#bet-amount::-webkit-outer-spin-button,
+#bet-amount::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Make badges more prominent */
+.badge {
+  padding: 0.5rem 0.7rem;
+}
+
+/* Style custom action buttons */
+.btn-action {
+  background-color: #B53471; /* Lighter Burgundy */
+  border-color: #9D2B60; /* Slightly darker border */
+  color: white; /* Ensure text is readable */
+}
+
+.btn-action:hover,
+.btn-action:focus,
+.btn-action:disabled {
+  background-color: #9D2B60; /* Darker on hover/focus/disabled */
+  border-color: #832150;
+  color: white;
+}
+
+/* Style for when a free bet is available on an action button */
+.btn-action.free-bet-available {
+  background-color: #832150; /* Even darker burgundy */
+  border-color: #6D214F; /* Darkest border */
+  font-weight: bold;
+  color: #FFD700; /* Gold color for text */
+}
+
+.btn-action.free-bet-available:disabled {
+  background-color: #9D2B60; /* Match standard disabled */
+  border-color: #832150;
+  color: white;
+}
+
+/* Style chip display card */
+#chip-info-card {
+  background-color: #832150; /* Darker Burgundy */
+  border: none; /* Remove default card border if needed */
+}
+
+/* Ensure text inside chip-info-card is white */
+#chip-info-card .card-body,
+#chip-info-card .h6 {
+  color: white;
+}
+
+/* King's Bounty Controls Styling */
+.kb-bet-controls {
+  display: flex;
+  align-items: center;
+}
+
+.kb-bet-controls .form-label {
+  margin-bottom: 0; /* Align label nicely */
+}
+
+#kb-bet-amount {
+   width: 60px; /* Smaller input for side bet */
+   background-color: #ffffff;
+}
+
+/* Hide number input arrows */
+#kb-bet-amount::-webkit-outer-spin-button,
+#kb-bet-amount::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+#kb-bet-amount {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+/* Style specific buttons */
+.header .btn-warning {
+  font-weight: bold;
+}
+
+#bet-btn {
+  font-weight: bold;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 600px) {
+  body {
+    font-size: 0.9rem; /* Slightly smaller base font */
+  }
+
+  .container {
+    padding-top: 0.3rem; /* Reduced top padding */
+    padding-bottom: 0.3rem; /* Reduced bottom padding */
+    padding-left: 0.5rem; /* Add horizontal padding */
+    padding-right: 0.5rem;
+  }
+
+  #game-container {
+    max-width: 100%; /* Allow full width */
+  }
+
+  .h2 {
+    font-size: 1.25rem; /* Smaller main title */
+  }
+
+  .h5 {
+    font-size: 1rem; /* Smaller card titles */
+  }
+
+  .badge {
+      padding: 0.4rem 0.6rem; /* Smaller badges */
+      font-size: 0.85rem;
+  }
+
+  #chip-count.fs-5, #current-bet.fs-5 {
+      font-size: 1rem !important; /* Adjust badge size override */
+  }
+
+  #kb-current-bet.fs-6 {
+      font-size: 0.9rem !important; /* Adjust KB badge size override */
+  }
+
+
+  .card {
+    padding: 6px;
+    min-width: 25px;
+    font-size: 0.8rem;
+  }
+
+  .cards {
+      max-height: 90px; /* Further reduced card area height */
+      gap: 3px; /* Slightly smaller gap */
+      padding: 3px;
+  }
+
+  #bet-amount,
+  #kb-bet-amount {
+      width: 50px; /* Smaller bet inputs */
+  }
+
+  .btn-sm {
+      padding: 0.2rem 0.4rem; /* Smaller buttons */
+      font-size: 0.8rem;
+  }
+
+  #controls .btn {
+      /* Ensure action buttons take up space but don't overflow */
+      min-width: auto;
+  }
+
+  .kb-bet-controls-wrapper,
+  .bet-controls-wrapper {
+      margin-bottom: 0.5rem !important; /* Reduced margin between bet controls */
+  }
+
+  #controls {
+      margin-bottom: 0.5rem !important; /* Reduced margin below action buttons */
+  }
+
+  .kb-bet-controls .input-group-sm .btn {
+    padding: 0.1rem 0.5rem; /* Tighter padding for +/- buttons */
+  }
+
+}

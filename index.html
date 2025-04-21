@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blackjack King's bounty</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-dark text-white">
+    <div class="container py-2">
+        <div id="game-container" class="mx-auto">
+            <div class="header d-flex justify-content-between align-items-center mb-3">
+                <h1 class="mb-0 h2">Blackjack King's bounty</h1>
+                <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#rulesModal">?</button>
+            </div>
+
+            <div id="chip-info-card" class="card mb-3">
+                <div class="card-body p-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="chip-display">
+                            <span class="h6 mb-0">Solde:</span>
+                            <span id="chip-count" class="badge bg-warning text-dark fs-5">100</span>
+                        </div>
+                        <div class="current-bet">
+                            <span class="h6 mb-0">Mise:</span>
+                            <span id="current-bet" class="badge bg-warning text-dark fs-5">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="game-table" class="row g-2 mb-3">
+                <div class="col-12 mb-2">
+                    <div class="card bg-dark border-light">
+                        <div class="card-body p-2">
+                            <h3 class="text-white h5 mb-1">Croupier</h3>
+                            <div id="dealer-cards" class="cards"></div>
+                            <p id="dealer-score" class="mt-1 mb-0 text-white"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="card bg-dark border-light">
+                        <div class="card-body p-2">
+                            <h3 class="text-white h5 mb-1">Joueur</h3>
+                            <div id="player-cards" class="cards"></div>
+                            <p id="player-score" class="mt-1 mb-0 text-white"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- King's Bounty Bet Controls (Label on top) -->
+            <div class="kb-bet-controls-wrapper mb-2">
+                <label for="kb-bet-amount" class="form-label small d-block">King's Bounty:</label>
+                <div class="kb-bet-controls">
+                    <div class="input-group input-group-sm flex-grow-1">
+                        <button class="btn btn-dark btn-sm px-3" type="button" onclick="adjustKBBET(-5)">-</button>
+                        <input type="number" id="kb-bet-amount" class="form-control form-control-sm text-center w-25" value="0" min="0" readonly>
+                        <button class="btn btn-dark btn-sm px-3" type="button" onclick="adjustKBBET(5)">+</button>
+                    </div>
+                    <span id="kb-current-bet" class="badge bg-warning text-dark ms-2 fs-6">0</span>
+                </div>
+            </div>
+
+            <!-- Main Bet Controls (Label on top) -->
+            <div class="bet-controls-wrapper mb-3">
+                <label for="bet-amount" class="form-label small d-block">Mise Principale:</label>
+                <div class="input-group">
+                    <button class="btn btn-dark btn-sm px-3" type="button" onclick="adjustBet(-10)">-</button>
+                    <input type="number" id="bet-amount" class="form-control form-control-sm text-center w-25" value="10" min="1" readonly>
+                    <button class="btn btn-dark btn-sm px-3" type="button" onclick="adjustBet(10)">+</button>
+                    <button id="bet-btn" class="btn btn-warning btn-sm">Miser</button>
+                </div>
+            </div>
+
+            <div id="controls" class="mb-3">
+                <div class="d-flex gap-1 mb-1">
+                    <button id="hit-btn" class="btn btn-action btn-sm w-50" disabled>Tirer carte</button>
+                    <button id="stand-btn" class="btn btn-action btn-sm w-50" disabled>Rester</button>
+                </div>
+                <div class="d-flex gap-1 mb-1">
+                    <button id="double-down-btn" class="btn btn-action btn-sm w-50" disabled>Doubler</button>
+                    <button id="split-btn" class="btn btn-action btn-sm w-50" disabled>Séparer</button>
+                </div>
+                <button id="new-game-btn" class="btn btn-secondary btn-sm w-100">Nouvelle Partie</button>
+            </div>
+
+            <div id="message" class="alert alert-light py-1 px-2 small" role="alert"></div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="rulesModal" tabindex="-1" aria-labelledby="rulesModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content bg-dark text-white">
+                <div class="modal-header border-secondary">
+                    <h5 class="modal-title" id="rulesModalLabel">Règles & Termes du Blackjack</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fermer"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 class="text-warning">Règles de base (Free Bet Blackjack):</h6>
+                    <ul class="list-group list-group-flush bg-dark mb-3">
+                        <li class="list-group-item bg-dark text-white">L'objectif est d'obtenir une main plus élevée que celle du croupier sans dépasser 21.</li>
+                        <li class="list-group-item bg-dark text-white">Se joue avec 1 à 8 paquets de 52 cartes.</li>
+                        <li class="list-group-item bg-dark text-white">As = 1 ou 11, Figures = 10, Autres = valeur nominale.</li>
+                        <li class="list-group-item bg-dark text-white">Blackjack = As + carte valant 10 (main initiale).</li>
+                        <li class="list-group-item bg-dark text-white">Le croupier doit tirer sur 16 ou moins et rester sur 17 ou plus (vérifiez la stratégie indiquée à la table si différente).</li>
+                        <li class="list-group-item bg-dark text-white">Si le croupier obtient 22, toutes les mises restantes sont nulles (Push).</li>
+                    </ul>
+
+                    <h6 class="text-warning">Options du Joueur:</h6>
+                    <dl class="row mb-3">
+                        <dt class="col-sm-3">Tirer</dt>
+                        <dd class="col-sm-9">Prendre une carte supplémentaire.</dd>
+
+                        <dt class="col-sm-3">Rester</dt>
+                        <dd class="col-sm-9">Ne pas prendre de carte supplémentaire.</dd>
+
+                        <dt class="col-sm-3">Partager (Split)</dt>
+                        <dd class="col-sm-9">Séparer deux cartes de même valeur en deux mains distinctes. Mise égale requise par main. Maximum 4 mains. Une seule carte sur As partagés.<br><strong>Mise Gratuite (Free Split):</strong> Possible sur toutes paires sauf les 10 (10, J, Q, K). Un marqueur "mise gratuite" remplace la mise additionnelle.</dd>
+
+                        <dt class="col-sm-3">Doubler (Double Down)</dt>
+                        <dd class="col-sm-9">Doubler la mise initiale et recevoir une seule carte supplémentaire. Possible après partage (sauf sur As).<br><strong>Mise Gratuite (Free Double):</strong> Possible sur un total de 9, 10 ou 11 difficile (avec les 2 premières cartes). Un marqueur "mise gratuite" remplace la mise additionnelle.</dd>
+
+                        <dt class="col-sm-3">Assurance</dt>
+                        <dd class="col-sm-9">Si la carte visible du croupier est un As. Mise de la moitié de la mise initiale. Payée 2:1 si le croupier a Blackjack.</dd>
+                    </dl>
+
+                    <h6 class="text-warning">Paiements:</h6>
+                     <ul class="list-group list-group-flush bg-dark mb-3">
+                        <li class="list-group-item bg-dark text-white">Blackjack payé 3 à 2 (sauf si égalité avec croupier).</li>
+                        <li class="list-group-item bg-dark text-white">Autres mains gagnantes payées 1 à 1.</li>
+                        <li class="list-group-item bg-dark text-white">Mises gratuites gagnantes payées 1 à 1 (équivalent à la mise initiale).</li>
+                        <li class="list-group-item bg-dark text-white">Égalité (Push) : Mise retournée (même score, ou joueur < 21 et croupier = 22).</li>
+                        <li class="list-group-item bg-dark text-white">Perdante : Main > 21, ou score inférieur à celui du croupier (si croupier <= 21 et != 22).</li>
+                    </ul>
+
+                     <h6 class="text-warning">Mise Additionnelle: King's Bounty</h6>
+                     <ul class="list-group list-group-flush bg-dark mb-3">
+                        <li class="list-group-item bg-dark text-white">Mise optionnelle placée avant la donne. Gagnante si les deux premières cartes du joueur totalisent 20.</li>
+                        <li class="list-group-item bg-dark text-white">
+                            <strong class="text-warning">Tableau de Paiement King's Bounty (Seul le plus élevé est payé):</strong>
+                            <table class="table table-dark table-sm table-bordered mt-2 small">
+                                <thead>
+                                    <tr>
+                                        <th>Deux premières cartes du joueur</th>
+                                        <th>Paiement</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr><td>Paire de Rois de Pique (et croupier a Blackjack)</td><td>1000 à 1</td></tr>
+                                    <tr><td>Paire de Rois de Pique</td><td>100 à 1</td></tr>
+                                    <tr><td>Paire de Rois de même couleur (suited)</td><td>30 à 1</td></tr>
+                                    <tr><td>Paire de 10/V/D/R de même couleur (suited)</td><td>20 à 1</td></tr>
+                                    <tr><td>Total de 20 de même couleur (suited)</td><td>9 à 1</td></tr>
+                                    <tr><td>Paire de Rois</td><td>6 à 1</td></tr>
+                                    <tr><td>Total de 20</td><td>4 à 1</td></tr>
+                                </tbody>
+                            </table>
+                            <small class="text-muted">Note : L'implémentation actuelle du jeu ne vérifie que le "Total de 20" et paie 4 à 1.</small>
+                        </li>
+                    </ul>
+
+                    <small class="d-block text-muted">Ces règles sont un résumé et peuvent varier. Référez-vous aux règles complètes affichées à la table ou fournies par l'établissement.</small>
+
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
